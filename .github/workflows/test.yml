@@ -1,0 +1,19 @@
+name: My workflow
+
+on: 
+  workflow_dispatch
+
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Print branch name
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "Push event branch: ${{ github.ref_name }}"
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "PR branch (head): ${{ github.head_ref }}"
+          fi
