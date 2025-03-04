@@ -20,3 +20,29 @@ jobs:
           elif [ "${{ github.event_name }}" = "pull_request" ]; then
             echo "PR branch (head): ${{ github.head_ref }}"
           fi
+
+  create_branch_and_pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Git config
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+
+      - name: Create new branch and commit changes
+        run: |
+          # Create a new branch (adjust branch name as needed)
+          git checkout -b new-branch
+          # Example change: Append text to a file (replace with your changes)
+          echo "Automated change by GitHub Actions" >> changes.txt
+          git add changes.txt
+          git commit -m "Automated commit: add changes.txt"
+          git push origin new-feature-branch
+
+      - name: Create Pull Request
+        run: gh pr create -B main -H new-branch --title 'Merge new-branch into base_branch' --body 'Created by Github action'
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}
