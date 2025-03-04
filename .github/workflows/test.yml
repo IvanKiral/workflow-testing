@@ -1,9 +1,6 @@
 name: My workflow
 
 on:
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
@@ -20,3 +17,23 @@ jobs:
           elif [ "${{ github.event_name }}" = "pull_request" ]; then
             echo "PR branch (head): ${{ github.head_ref }}"
           fi
+          
+  test-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update file content
+        run: |
+          # Append a new line to file.txt. Change this command to modify the file as needed.
+          echo "This is an automated update at $(date)" >> updated.txt
+
+      - name: Copy to the folder
+        run: git ls-files --other --modified --exclude-standard | xargs -I% sh -c 'mkdir -p "artifact/$(dirname "%")" && cp "%" "artifact/%"'
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: artifact-lol
+          path: artifact/
+          retention-days: 10
