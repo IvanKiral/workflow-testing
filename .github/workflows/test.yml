@@ -40,7 +40,7 @@ jobs:
           echo "Automated change by GitHub Actions" >> changes.txt
           git add changes.txt
           git commit -m "Automated commit: add changes.txt"
-          git push origin new-feature-branch
+          git push origin new-branch
 
       - name: Create Pull Request
         run: gh pr create -B main -H new-branch --title 'Merge new-branch into base_branch' --body 'Created by Github action'
