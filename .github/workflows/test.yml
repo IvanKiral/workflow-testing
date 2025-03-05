@@ -20,3 +20,7 @@ jobs:
           elif [ "${{ github.event_name }}" = "pull_request" ]; then
             echo "PR branch (head): ${{ github.head_ref }}"
           fi
+
+      - name: Comment PR
+        run: |
+          gh pr comment 1 --body "Hello from action"
