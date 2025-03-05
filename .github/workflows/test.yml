@@ -9,6 +9,8 @@ on:
 jobs:
   example_job:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -20,3 +22,13 @@ jobs:
           elif [ "${{ github.event_name }}" = "pull_request" ]; then
             echo "PR branch (head): ${{ github.head_ref }}"
           fi
+
+      - name: Comment PR
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body "Hello from action"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Print error message
+        run: |
+          echo ::error:: Custom message
