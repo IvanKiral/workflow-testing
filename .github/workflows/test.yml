@@ -28,3 +28,7 @@ jobs:
           gh pr comment ${{ github.event.pull_request.number }} --body "Hello from action"
         env:
           GH_TOKEN: ${{ github.token }}
+
+      - name: Print error message
+        run: |
+          echo ::error:: Custom message
