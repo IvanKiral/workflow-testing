@@ -24,3 +24,5 @@ jobs:
       - name: Comment PR
         run: |
           gh pr comment 1 --body "Hello from action"
+        env:
+          GH_TOKEN: ${{ github.token }}
